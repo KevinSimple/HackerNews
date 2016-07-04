@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <title>Hacker News</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel="stylesheet" href="../node_modules/angular-material/angular-material.css"/>
+    <link rel="stylesheet" href="assets/app.css"/>
+
+    <style type="text/css">
+        /**
+         * Hide when Angular is not yet loaded and initialized
+         */
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+          display: none !important;
+        }
+    </style>
+
+  </head>
+
+  <body ng-app="App" layout="column" ng-controller="UserController as ul" ng-cloak>
+
+    <md-toolbar layout="row">
+      <div  class="md-toolbar-tools">
+      <h1 flex="70">Hacker News</h1>
+      <md-button flex="30" class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label="Show User List">
+        <md-icon md-svg-icon="menu" ></md-icon>
+      </md-button>
+      </div>
+    </md-toolbar>
+
+    <div flex layout="row">
+       
+       <!--News Content-->
+    <md-content flex id="news">
+      <md-list flex="">
+        <md-subheader class="md-no-sticky">Top 25 news from Hacker news</md-subheader>
+
+        <md-progress-linear md-mode="indeterminate" ng-show="ul.isLoading"></md-progress-linear>
+        <md-list-item class="md-3-line" ng-repeat="item in ul.news" ng-click="null">        
+          <!--<img  ng-src="assets/svg/twitter.svg" class="avatar"">-->
+          <md-icon md-svg-src="assets/svg/twitter.svg" aria-label="news "></md-icon>        
+          <div class="md-list-item-text" layout="column">
+            <h3>{{ item.title }}</h3>
+            <h4>by {{ item.by }}</h4>            
+          </div>
+          <md-button class="md-primary md-raised" ng-click="ul.showWindow(item)">
+     Preview 
+    </md-button>
+          <md-button class="md-primary md-raised" ng-click="ul.openNewWindow(item)">
+     Go
+    </md-button>
+        </md-list-item>    
+      </md-list>
+    </md-content>
+
+
+<md-sidenav  ng-click="ul.toggleList()" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="right" class="md-whiteframe-z2 md-sidenav-right" >
+          <md-list>
+            <md-list-item >
+                <md-button ng-click="ul.refresh()">
+                  <md-icon md-svg-icon="assets/svg/refresh.svg" class="avatar"></md-icon>
+                 Refresh
+                </md-button>
+            </md-list-item>
+             <md-list-item >
+                <md-button ng-click="ul.showStoryNumSetDialog()">
+                  <md-icon md-svg-icon="assets/svg/config.svg" class="avatar"></md-icon>
+                 Config
+                </md-button>
+            </md-list-item>             
+          </md-list>
+        </md-sidenav>
+    </div>
+
+    <script src="../node_modules/angular/angular.js"></script>
+    <script src="../node_modules/angular-animate/angular-animate.js"></script>
+    <script src="../node_modules/angular-aria/angular-aria.js"></script>
+    <script type="text/javascript" src="../node_modules/angular-material/angular-material.js"></script>
+
+    <script src="./src/users/Users.js"></script>
+    <script src="./src/users/UserController.js"></script>
+    <script src="./src/users/UserService.js"></script>
+
+    <script type="text/javascript">
+
+          angular
+              .module('App', ['ngMaterial', 'users'])
+              .config(function($mdThemingProvider, $mdIconProvider){
+
+                  $mdIconProvider
+                      .defaultIconSet("./assets/svg/avatars.svg", 128)
+                      .icon("menu"       , "./assets/svg/menu.svg"        , 24)
+                      .icon("share"      , "./assets/svg/share.svg"       , 24)
+                      .icon("google_plus", "./assets/svg/google_plus.svg" , 512)                    
+                      .icon("twitter"    , "./assets/svg/twitter.svg"     , 512)                    
+
+                      $mdThemingProvider.theme('default')
+                          .primaryPalette('brown')
+                          .accentPalette('red');
+
+              });
+
+    </script>
+
+  </body>
+</html>
